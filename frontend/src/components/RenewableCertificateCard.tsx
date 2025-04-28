@@ -68,12 +68,16 @@ export default function RenewableCertificateCard() {
 
     const handleMintCertificate = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!renewableCertificate || !energyAmount || !generatorAddress || !energySource || !location) return
+        if (!renewableCertificate || !energyAmount || !energySource || !location) return
+
+        // Use current account if generator address is empty
+        const generator = generatorAddress.trim() ? generatorAddress : account
 
         setMintLoading(true)
         try {
+            console.log("Minting certificate to:", generator)
             const tx = await renewableCertificate.mintCertificate(
-                generatorAddress,
+                generator,
                 parseInt(energyAmount),
                 energySource,
                 location
@@ -85,8 +89,12 @@ export default function RenewableCertificateCard() {
 
             // Refresh certificate data
             await refreshCertificateData()
+
+            // Show success message
+            alert("Certificate minted successfully!")
         } catch (error) {
             console.error("Error minting certificate:", error)
+            alert("Failed to mint certificate. Check console for details.")
         } finally {
             setMintLoading(false)
         }
@@ -159,7 +167,18 @@ export default function RenewableCertificateCard() {
                     {!showDetails ? (
                         <>
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2 text-gray-800">Your Certificate Portfolio</h3>
+                                <div className="flex justify-between items-center mb-2">
+                                    <h3 className="text-lg font-semibold text-gray-800">Your Certificate Portfolio</h3>
+                                    <button
+                                        onClick={() => {
+                                            setLocalLoading(true)
+                                            refreshCertificateData()
+                                        }}
+                                        disabled={effectivelyLoading}
+                                        className="text-sm text-blue-600 hover:text-blue-800 disabled:text-gray-400">
+                                        {effectivelyLoading ? "Refreshing..." : "Refresh"}
+                                    </button>
+                                </div>
                                 {effectivelyLoading ? (
                                     <p className="text-center py-4 text-gray-700">Loading certificates...</p>
                                 ) : ownedCertificates.length === 0 ? (
@@ -192,15 +211,23 @@ export default function RenewableCertificateCard() {
                                     <label htmlFor="generator-address" className="block text-gray-800 mb-2">
                                         Generator Address
                                     </label>
-                                    <input
-                                        id="generator-address"
-                                        type="text"
-                                        value={generatorAddress}
-                                        onChange={(e) => setGeneratorAddress(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
-                                        placeholder="0x..."
-                                        required
-                                    />
+                                    <div className="flex gap-2">
+                                        <input
+                                            id="generator-address"
+                                            type="text"
+                                            value={generatorAddress}
+                                            onChange={(e) => setGeneratorAddress(e.target.value)}
+                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                                            placeholder="0x..."
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setGeneratorAddress(account)}
+                                            className="whitespace-nowrap px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+                                            Use My Address
+                                        </button>
+                                    </div>
+                                    <p className="text-xs text-gray-700 mt-1">Leave empty to use your own address</p>
                                 </div>
 
                                 <div className="mb-4">

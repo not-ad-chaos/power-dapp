@@ -63,6 +63,10 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
     // Get certificate data for the current user - using useCallback to stabilize the function reference
     const refreshCertificateData = useCallback(async () => {
         if (!renewableCertificate || !account) {
+            console.log("Missing dependencies for refreshCertificateData:", {
+                hasRenewableCertificate: !!renewableCertificate,
+                hasAccount: !!account,
+            })
             return
         }
 
@@ -70,6 +74,7 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
         const now = Date.now()
         if (now - lastRefreshTime < 3000) {
             // 3 second cooldown
+            console.log("Skipping refresh due to cooldown")
             return
         }
         setLastRefreshTime(now)
@@ -80,20 +85,30 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
         }
 
         try {
+            console.log("Starting certificate data refresh for account:", account)
+
             // Get basic certificate count
             const count = await renewableCertificate.getCertificates(account)
-            setCertificateCount(parseInt(count.toString()))
+            const certCount = parseInt(count.toString())
+            console.log("Certificate count:", certCount)
+            setCertificateCount(certCount)
 
             // Get owned certificate IDs
             const certificateIds = await renewableCertificate.getOwnedCertificateIds(account)
+            console.log("Certificate IDs:", certificateIds, "Length:", certificateIds?.length)
 
             if (certificateIds && certificateIds.length > 0) {
+                console.log("Fetching details for certificates...")
+
                 // Get details for each certificate
                 const certificatesDetails = await Promise.all(
-                    certificateIds.map(async (id: any) => {
+                    certificateIds.map(async (id: any, index: number) => {
                         try {
+                            console.log(
+                                `Fetching details for certificate ID ${id} (${index + 1}/${certificateIds.length})`
+                            )
                             const details = await renewableCertificate.getCertificateDetails(id)
-                            return {
+                            const cert = {
                                 id: id.toString(),
                                 energyAmount: details.energyAmount.toString(),
                                 issuanceDate: new Date(details.issuanceDate.toNumber() * 1000).toLocaleDateString(),
@@ -102,17 +117,22 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
                                 isValid: details.isValid,
                                 owner: details.owner,
                             }
+                            console.log(`Certificate ${id} details:`, cert)
+                            return cert
                         } catch (error) {
-                            console.error("Error fetching certificate details:", error)
+                            console.error(`Error fetching certificate details for ID ${id}:`, error)
                             return null
                         }
                     })
                 )
 
                 // Filter out any null values from failed detail fetches
-                setOwnedCertificates(certificatesDetails.filter((cert) => cert !== null))
+                const validCerts = certificatesDetails.filter((cert) => cert !== null)
+                console.log(`Successfully fetched ${validCerts.length} of ${certificateIds.length} certificates`)
+                setOwnedCertificates(validCerts)
             } else {
                 // Clear certificates if none found
+                console.log("No certificate IDs found, clearing owned certificates")
                 setOwnedCertificates([])
             }
 
@@ -165,6 +185,7 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
             setOwnedCertificates([])
         } finally {
             setIsLoading(false)
+            console.log("Certificate data refresh completed")
         }
     }, [renewableCertificate, account, energyTrader, userRegion, isLoading, lastRefreshTime])
 

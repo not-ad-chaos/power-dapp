@@ -7,6 +7,7 @@ import { useContract } from "../contexts/ContractContext"
 export default function EnergyMarketplace() {
     const {
         energyTrader,
+        energyLogger,
         account,
         isConnected,
         userRegion,
@@ -14,6 +15,7 @@ export default function EnergyMarketplace() {
         marketOffers,
         refreshCertificateData,
         isLoading,
+        renewableCertificate,
     } = useContract()
 
     const [createOfferView, setCreateOfferView] = useState<boolean>(false)
@@ -42,14 +44,14 @@ export default function EnergyMarketplace() {
 
     const handleRegisterRegion = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!energyTrader || !regionInput) return
+        if (!energyLogger || !regionInput) return
 
-        console.log("Registering region:", energyTrader.address)
+        console.log("Registering region using energyLogger")
 
         setRegisteringRegion(true)
         try {
-            // Assuming EnergyLogger has a registerUser function
-            const tx = await energyTrader.registerUser(regionInput)
+            // Using energyLogger instead of energyTrader for registerUser
+            const tx = await energyLogger.registerUser(regionInput)
             await tx.wait()
 
             setUserRegion(regionInput)
@@ -63,7 +65,36 @@ export default function EnergyMarketplace() {
 
     const handleCreateOffer = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!energyTrader || !energyAmount || !pricePerUnit || !minPurchaseAmount || !expirationTime) return
+        if (
+            !energyTrader ||
+            !renewableCertificate ||
+            !energyAmount ||
+            !pricePerUnit ||
+            !minPurchaseAmount ||
+            !expirationTime
+        )
+            return
+
+        // Check if user has enough certificates if isCertified is checked
+        if (isCertified) {
+            try {
+                // Get certificate count
+                const count = await renewableCertificate.getCertificates(account)
+                const certificateCount = parseInt(count.toString())
+                const requiredCertificates = Math.ceil(parseInt(energyAmount) / 100)
+
+                if (certificateCount < requiredCertificates) {
+                    alert(
+                        `Insufficient certificates. You need at least ${requiredCertificates} certificates to cover ${energyAmount} kWh of certified energy. You currently have ${certificateCount} certificates.`
+                    )
+                    return
+                }
+            } catch (error) {
+                console.error("Error checking certificate count:", error)
+                alert("Failed to verify certificate count. Please try again.")
+                return
+            }
+        }
 
         setCreatingOffer(true)
         try {
@@ -92,10 +123,24 @@ export default function EnergyMarketplace() {
             setIsCertified(false)
             setCreateOfferView(false)
 
+            // Show success message
+            alert("Energy offer created successfully!")
+
             // Refresh market offers
             await refreshCertificateData()
         } catch (error) {
             console.error("Error creating offer:", error)
+            let errorMessage = "Failed to create offer. Please try again."
+
+            // Try to extract useful error message
+            if (typeof error === "object" && error !== null && "message" in error) {
+                const errorObj = error as { message: string }
+                if (errorObj.message.includes("Insufficient certificates")) {
+                    errorMessage = "You don't have enough renewable energy certificates to cover this offer."
+                }
+            }
+
+            alert(errorMessage)
         } finally {
             setCreatingOffer(false)
         }
