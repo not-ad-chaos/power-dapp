@@ -5,15 +5,20 @@ const EnergyLogger = artifacts.require("EnergyLogger")
 const EnergyTradeLedger = artifacts.require("EnergyTradeLedger")
 
 module.exports = async function (deployer, network, accounts) {
-    // Deploy contracts
+    // Deploy the certificate contract first
     await deployer.deploy(RenewableCertificate)
-    await deployer.deploy(EnergyLogger)
-    await deployer.deploy(EnergyTradeLedger)
-
-    // Get deployed contract instances
     const renewableCertificate = await RenewableCertificate.deployed()
+    console.log(`RenewableCertificate deployed at: ${renewableCertificate.address}`)
+
+    // Deploy the energy logger with certificate contract address
+    await deployer.deploy(EnergyLogger, renewableCertificate.address)
     const energyLogger = await EnergyLogger.deployed()
+    console.log(`EnergyLogger deployed at: ${energyLogger.address}`)
+
+    // Deploy the trade ledger with both certificate and logger addresses
+    await deployer.deploy(EnergyTradeLedger, renewableCertificate.address, energyLogger.address)
     const energyTradeLedger = await EnergyTradeLedger.deployed()
+    console.log(`EnergyTradeLedger deployed at: ${energyTradeLedger.address}`)
 
     // Create contract addresses object
     const contractAddresses = {
@@ -26,7 +31,7 @@ module.exports = async function (deployer, network, accounts) {
     }
 
     // Create frontend/src/constants directory if it doesn't exist
-    const constantsDir = path.resolve(__dirname, "../frontend/src/contracts")
+    const constantsDir = path.resolve(__dirname, "../frontend/src/constants")
     if (!fs.existsSync(constantsDir)) {
         fs.mkdirSync(constantsDir, { recursive: true })
     }
@@ -35,7 +40,7 @@ module.exports = async function (deployer, network, accounts) {
     fs.writeFileSync(path.join(constantsDir, "contracts.json"), JSON.stringify(contractAddresses, null, 2))
 
     // Create frontend/src/artifacts directory if it doesn't exist
-    const artifactsDir = path.resolve(__dirname, "../frontend/src/contracts")
+    const artifactsDir = path.resolve(__dirname, "../frontend/src/artifacts")
     if (!fs.existsSync(artifactsDir)) {
         fs.mkdirSync(artifactsDir, { recursive: true })
     }
