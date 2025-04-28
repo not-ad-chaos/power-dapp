@@ -1,47 +1,67 @@
-const fs = require('fs');
-const path = require('path');
-const RenewableCertificate = artifacts.require("RenewableCertificate");
-const EnergyLogger = artifacts.require("EnergyLogger");
-const EnergyTradeLedger = artifacts.require("EnergyTradeLedger");
+const fs = require("fs")
+const path = require("path")
+const RenewableCertificate = artifacts.require("RenewableCertificate")
+const EnergyLogger = artifacts.require("EnergyLogger")
+const EnergyTradeLedger = artifacts.require("EnergyTradeLedger")
 
 module.exports = async function (deployer, network, accounts) {
-  // Deploy contracts
-  await deployer.deploy(RenewableCertificate);
-  await deployer.deploy(EnergyLogger);
-  await deployer.deploy(EnergyTradeLedger);
-  
-  // Get deployed contract instances
-  const renewableCertificate = await RenewableCertificate.deployed();
-  const energyLogger = await EnergyLogger.deployed();
-  const energyTradeLedger = await EnergyTradeLedger.deployed();
-  
-  // Create contract addresses object
-  const contractAddresses = {
-    networkId: deployer.network_id.toString(),
-    addresses: {
-      ENERGY_LOGGER: energyLogger.address,
-      RENEWABLE_CERTIFICATE: renewableCertificate.address,
-      ENERGY_TRADER: energyTradeLedger.address
-    },
-    abi: {
-      ENERGY_LOGGER: EnergyLogger.abi,
-      RENEWABLE_CERTIFICATE: RenewableCertificate.abi,
-      ENERGY_TRADER: EnergyTradeLedger.abi
+    // Deploy contracts
+    await deployer.deploy(RenewableCertificate)
+    await deployer.deploy(EnergyLogger)
+    await deployer.deploy(EnergyTradeLedger)
+
+    // Get deployed contract instances
+    const renewableCertificate = await RenewableCertificate.deployed()
+    const energyLogger = await EnergyLogger.deployed()
+    const energyTradeLedger = await EnergyTradeLedger.deployed()
+
+    // Create contract addresses object
+    const contractAddresses = {
+        networkId: deployer.network_id.toString(),
+        addresses: {
+            ENERGY_LOGGER: energyLogger.address,
+            RENEWABLE_CERTIFICATE: renewableCertificate.address,
+            ENERGY_TRADER: energyTradeLedger.address,
+        },
     }
-  };
-  
-  // Create frontend/src/contracts directory if it doesn't exist
-  const contractsDir = path.resolve(__dirname, '../build/');
-  if (!fs.existsSync(contractsDir)) {
-    fs.mkdirSync(contractsDir, { recursive: true });
-  }
-  
-  // Write contracts.json to frontend/src/contracts
-  fs.writeFileSync(
-    path.join(contractsDir, 'contracts.json'),
-    JSON.stringify(contractAddresses, null, 2)
-  );
 
-  console.log('Contract addresses exported');
-}; 
+    // Create frontend/src/constants directory if it doesn't exist
+    const constantsDir = path.resolve(__dirname, "../frontend/src/contracts")
+    if (!fs.existsSync(constantsDir)) {
+        fs.mkdirSync(constantsDir, { recursive: true })
+    }
 
+    // Write contracts.json to frontend/src/constants
+    fs.writeFileSync(path.join(constantsDir, "contracts.json"), JSON.stringify(contractAddresses, null, 2))
+
+    // Create frontend/src/artifacts directory if it doesn't exist
+    const artifactsDir = path.resolve(__dirname, "../frontend/src/contracts")
+    if (!fs.existsSync(artifactsDir)) {
+        fs.mkdirSync(artifactsDir, { recursive: true })
+    }
+
+    // Copy contract ABI files from build/contracts to frontend/src/artifacts
+    const buildDir = path.resolve(__dirname, "../build/contracts")
+
+    // Check if build directory exists
+    if (fs.existsSync(buildDir)) {
+        // Read all files in the build/contracts directory
+        const files = fs.readdirSync(buildDir)
+
+        // Copy each ABI file to the artifacts directory
+        files.forEach((file) => {
+            const filePath = path.join(buildDir, file)
+            const destPath = path.join(artifactsDir, file)
+
+            if (fs.statSync(filePath).isFile()) {
+                fs.copyFileSync(filePath, destPath)
+                console.log(`Copied ${file} to frontend/src/artifacts`)
+            }
+        })
+    } else {
+        console.error("build/contracts directory does not exist")
+    }
+
+    console.log("Contract addresses exported to frontend/src/constants/contracts.json")
+    console.log("Contract ABIs copied to frontend/src/artifacts")
+}

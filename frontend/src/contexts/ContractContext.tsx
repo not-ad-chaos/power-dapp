@@ -3,6 +3,9 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
 import contractsData from '../contracts/contracts.json';
+import EnergyLogger from '../contracts/EnergyLogger.json';
+import RenewableCertificate from '../contracts/RenewableCertificate.json';
+import EnergyTradeLedger from "../contracts/EnergyTradeLedger.json"
 
 interface ContractContextType {
   account: string;
@@ -44,31 +47,23 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
         
         // Get network ID to use the correct contract addresses
         const network = await web3Provider.getNetwork();
-        const networkId = network.chainId.toString();
-        
-        // If contracts are not deployed to this network, use the default network
-        const addresses = contractsData.addresses;
-        const abis = contractsData.abi;
-        
-        if (!addresses || !abis) {
-          throw new Error('Contract data not found. Please ensure contracts are deployed and exported correctly.');
-        }
+  
         
         const loggerContract = new ethers.Contract(
-          addresses.ENERGY_LOGGER,
-          abis.ENERGY_LOGGER,
+          contractsData.addresses.ENERGY_LOGGER,
+          EnergyLogger.abi,
           signer
         );
         
         const certificateContract = new ethers.Contract(
-          addresses.RENEWABLE_CERTIFICATE,
-          abis.RENEWABLE_CERTIFICATE,
+          contractsData.addresses.RENEWABLE_CERTIFICATE,
+          RenewableCertificate.abi,
           signer
         );
         
         const traderContract = new ethers.Contract(
-          addresses.ENERGY_TRADER,
-          abis.ENERGY_TRADER,
+          contractsData.addresses.ENERGY_TRADER,
+          EnergyTradeLedger.abi,
           signer
         );
         

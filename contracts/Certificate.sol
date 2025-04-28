@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 
 contract RenewableCertificate {
     uint public constant ENERGY_THRESHOLD = 100; // 100 kWh = 1 certificate

@@ -1,0 +1,16 @@
+{
+    "name": "power-dapp",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "copy-artifacts": "node scripts/copy-artifacts.js"
+    },
+    "dependencies": {
+        "truffle": "latest"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
