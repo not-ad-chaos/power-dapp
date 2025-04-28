@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useContract } from "../contexts/ContractContext"
 
 export default function RenewableCertificateCard() {
@@ -25,12 +25,40 @@ export default function RenewableCertificateCard() {
     const [mintLoading, setMintLoading] = useState<boolean>(false)
     const [transferLoading, setTransferLoading] = useState<boolean>(false)
     const [redeemLoading, setRedeemLoading] = useState<boolean>(false)
+    const [localLoading, setLocalLoading] = useState<boolean>(false)
+    const loadingTimerRef = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
         if (isConnected) {
+            // Set a local loading state
+            setLocalLoading(true)
+
+            // Attempt to refresh data
             refreshCertificateData()
+
+            // Set a timeout to clear loading state if it takes too long
+            loadingTimerRef.current = setTimeout(() => {
+                setLocalLoading(false)
+            }, 10000) // 10 seconds timeout
         }
-    }, [isConnected, refreshCertificateData])
+
+        return () => {
+            if (loadingTimerRef.current) {
+                clearTimeout(loadingTimerRef.current)
+            }
+        }
+    }, [isConnected])
+
+    // Update local loading state when isLoading changes
+    useEffect(() => {
+        if (!isLoading && localLoading) {
+            setLocalLoading(false)
+            if (loadingTimerRef.current) {
+                clearTimeout(loadingTimerRef.current)
+                loadingTimerRef.current = null
+            }
+        }
+    }, [isLoading, localLoading])
 
     useEffect(() => {
         if (userRegion) {
@@ -111,6 +139,9 @@ export default function RenewableCertificateCard() {
         }
     }
 
+    // Use this combined loading state to prevent flicker
+    const effectivelyLoading = isLoading || localLoading
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-4 text-blue-700">Renewable Energy Certificates</h2>
@@ -129,7 +160,7 @@ export default function RenewableCertificateCard() {
                         <>
                             <div className="mb-6">
                                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Your Certificate Portfolio</h3>
-                                {isLoading ? (
+                                {effectivelyLoading ? (
                                     <p className="text-center py-4 text-gray-700">Loading certificates...</p>
                                 ) : ownedCertificates.length === 0 ? (
                                     <p className="text-center py-4 text-gray-700">You don't own any certificates yet</p>

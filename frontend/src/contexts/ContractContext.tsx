@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react"
 import { ethers } from "ethers"
 import contractsData from "../constants/contracts.json"
 import EnergyLogger from "../artifacts/EnergyLogger.json"
@@ -58,12 +58,27 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
     const [ownedCertificates, setOwnedCertificates] = useState<any[]>([])
     const [marketOffers, setMarketOffers] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [lastRefreshTime, setLastRefreshTime] = useState<number>(0)
 
-    // Get certificate data for the current user
-    const refreshCertificateData = async () => {
-        if (!renewableCertificate || !account || !energyTrader) return
+    // Get certificate data for the current user - using useCallback to stabilize the function reference
+    const refreshCertificateData = useCallback(async () => {
+        if (!renewableCertificate || !account) {
+            return
+        }
 
-        setIsLoading(true)
+        // Prevent multiple rapid refreshes
+        const now = Date.now()
+        if (now - lastRefreshTime < 3000) {
+            // 3 second cooldown
+            return
+        }
+        setLastRefreshTime(now)
+
+        // Don't set loading if we're already loading
+        if (!isLoading) {
+            setIsLoading(true)
+        }
+
         try {
             // Get basic certificate count
             const count = await renewableCertificate.getCertificates(account)
@@ -72,59 +87,86 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
             // Get owned certificate IDs
             const certificateIds = await renewableCertificate.getOwnedCertificateIds(account)
 
-            // Get details for each certificate
-            const certificatesDetails = await Promise.all(
-                certificateIds.map(async (id: any) => {
-                    const details = await renewableCertificate.getCertificateDetails(id)
-                    return {
-                        id: id.toString(),
-                        energyAmount: details.energyAmount.toString(),
-                        issuanceDate: new Date(details.issuanceDate.toNumber() * 1000).toLocaleDateString(),
-                        energySource: details.energySource,
-                        location: details.location,
-                        isValid: details.isValid,
-                        owner: details.owner,
-                    }
-                })
-            )
-
-            setOwnedCertificates(certificatesDetails)
-
-            // Get active market offers if user region is set
-            if (userRegion) {
-                const regionOfferIds = await energyTrader.getRegionOffers(userRegion)
-
-                const activeOffers = await Promise.all(
-                    regionOfferIds.map(async (id: any) => {
-                        const offerDetails = await energyTrader.getOffer(id)
-                        // Only return active offers
-                        if (offerDetails.isActive) {
+            if (certificateIds && certificateIds.length > 0) {
+                // Get details for each certificate
+                const certificatesDetails = await Promise.all(
+                    certificateIds.map(async (id: any) => {
+                        try {
+                            const details = await renewableCertificate.getCertificateDetails(id)
                             return {
-                                id: offerDetails.id.toString(),
-                                seller: offerDetails.seller,
-                                energyAmount: offerDetails.energyAmount.toString(),
-                                pricePerUnit: ethers.utils.formatEther(offerDetails.pricePerUnit),
-                                minPurchaseAmount: offerDetails.minPurchaseAmount.toString(),
-                                expirationTime: new Date(
-                                    offerDetails.expirationTime.toNumber() * 1000
-                                ).toLocaleDateString(),
-                                region: offerDetails.region,
-                                isCertified: offerDetails.isCertified,
+                                id: id.toString(),
+                                energyAmount: details.energyAmount.toString(),
+                                issuanceDate: new Date(details.issuanceDate.toNumber() * 1000).toLocaleDateString(),
+                                energySource: details.energySource,
+                                location: details.location,
+                                isValid: details.isValid,
+                                owner: details.owner,
                             }
+                        } catch (error) {
+                            console.error("Error fetching certificate details:", error)
+                            return null
                         }
-                        return null
                     })
                 )
 
-                // Filter out null values (inactive offers)
-                setMarketOffers(activeOffers.filter((offer) => offer !== null))
+                // Filter out any null values from failed detail fetches
+                setOwnedCertificates(certificatesDetails.filter((cert) => cert !== null))
+            } else {
+                // Clear certificates if none found
+                setOwnedCertificates([])
+            }
+
+            // Get active market offers if user region is set and trader contract is available
+            if (userRegion && energyTrader) {
+                try {
+                    const regionOfferIds = await energyTrader.getRegionOffers(userRegion)
+
+                    if (regionOfferIds && regionOfferIds.length > 0) {
+                        const activeOffers = await Promise.all(
+                            regionOfferIds.map(async (id: any) => {
+                                try {
+                                    const offerDetails = await energyTrader.getOffer(id)
+                                    // Only return active offers
+                                    if (offerDetails.isActive) {
+                                        return {
+                                            id: offerDetails.id.toString(),
+                                            seller: offerDetails.seller,
+                                            energyAmount: offerDetails.energyAmount.toString(),
+                                            pricePerUnit: ethers.utils.formatEther(offerDetails.pricePerUnit),
+                                            minPurchaseAmount: offerDetails.minPurchaseAmount.toString(),
+                                            expirationTime: new Date(
+                                                offerDetails.expirationTime.toNumber() * 1000
+                                            ).toLocaleDateString(),
+                                            region: offerDetails.region,
+                                            isCertified: offerDetails.isCertified,
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error("Error fetching offer details:", error)
+                                }
+                                return null
+                            })
+                        )
+
+                        // Filter out null values (inactive offers)
+                        setMarketOffers(activeOffers.filter((offer) => offer !== null))
+                    } else {
+                        setMarketOffers([])
+                    }
+                } catch (error) {
+                    console.error("Error fetching region offers:", error)
+                    setMarketOffers([])
+                }
             }
         } catch (error) {
             console.error("Error refreshing certificate data:", error)
+            // In case of error, clear the collections to avoid partial data
+            setCertificateCount(0)
+            setOwnedCertificates([])
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [renewableCertificate, account, energyTrader, userRegion, isLoading, lastRefreshTime])
 
     const connectWallet = async () => {
         try {
