@@ -92,7 +92,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -111,7 +112,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -130,7 +132,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -174,7 +177,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -198,7 +202,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -217,7 +222,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -295,7 +301,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -314,7 +321,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -363,7 +371,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -20448,10 +20457,23 @@
       "links": {},
       "address": "0x8e59e9a935c4c4fEa7D67191136208beBd9B8227",
       "transactionHash": "0xfa8200a0d399656052e78e1ab2969167a7517193ca03685d4fdfac472072b94e"
+    },
+    "1745859279690": {
+      "events": {},
+      "links": {},
+      "address": "0xa417bb88629Bb0Ab57Bbb245b4414071902953AF",
+      "transactionHash": "0xac0b5abb55ffe22cc06023c8e8ef94e95d443051b9f9b1950966d06df20b9d09"
+    },
+    "1745859858735": {
+      "events": {},
+      "links": {},
+      "address": "0xa417bb88629Bb0Ab57Bbb245b4414071902953AF",
+      "transactionHash": "0xac0b5abb55ffe22cc06023c8e8ef94e95d443051b9f9b1950966d06df20b9d09"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-04-28T16:56:34.408Z",
+  "updatedAt": "2025-04-28T17:04:19.794Z",
+  "networkType": "ethereum",
   "devdoc": {
     "details": "Contract for managing Renewable Energy Certificates (RECs) This contract allows for minting, transferring, and trading renewable energy certificates",
     "kind": "dev",

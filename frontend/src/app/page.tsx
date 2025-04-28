@@ -14,11 +14,11 @@ export default function Home() {
                 <Navbar />
 
                 <div className="container mx-auto px-4 py-8">
-                    <h1 className="text-3xl font-bold text-center mb-8">Decentralized Energy Platform</h1>
+                    <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">Decentralized Energy Platform</h1>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                         <div>
-                            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Energy Management</h2>
+                            <h2 className="text-2xl font-semibold mb-4 text-gray-900">Energy Management</h2>
                             <div className="space-y-6">
                                 <EnergyLoggerCard />
                                 <RenewableCertificateCard />
@@ -26,7 +26,7 @@ export default function Home() {
                         </div>
 
                         <div>
-                            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Energy Trading</h2>
+                            <h2 className="text-2xl font-semibold mb-4 text-gray-900">Energy Trading</h2>
                             <div className="space-y-6">
                                 <EnergyMarketplace />
                                 <EnergyTraderCard />
@@ -34,8 +34,8 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <div className="mt-16 text-center text-gray-500">
-                        <h3 className="text-xl font-semibold mb-2">About This Platform</h3>
+                    <div className="mt-16 text-center text-gray-700">
+                        <h3 className="text-xl font-semibold mb-2 text-gray-900">About This Platform</h3>
                         <p className="max-w-3xl mx-auto">
                             This decentralized application enables users to log energy production and consumption, earn
                             renewable energy certificates, and participate in peer-to-peer energy trading. Built on

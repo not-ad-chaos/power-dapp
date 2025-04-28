@@ -196,7 +196,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -235,7 +236,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -248,7 +250,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -302,7 +305,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -326,7 +330,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -360,7 +365,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -379,7 +385,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -398,7 +405,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -568,7 +576,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -622,7 +631,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -641,7 +651,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -660,7 +671,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -699,7 +711,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -27706,10 +27719,23 @@
       "links": {},
       "address": "0xB2ff913a1Be316EC1a6163CAf111a8EF0fcD5ba9",
       "transactionHash": "0x27bded701564c760c77d197521f10bc48141ba35d48b72b2361360bcfd79fa65"
+    },
+    "1745859279690": {
+      "events": {},
+      "links": {},
+      "address": "0x51fFECC16e2755a3568cCc7928C1CFC6fbEd710c",
+      "transactionHash": "0x0dc350b8b888f95b444c0750da32e5643d6748837ec966fbc7e09fa6920e0078"
+    },
+    "1745859858735": {
+      "events": {},
+      "links": {},
+      "address": "0x51fFECC16e2755a3568cCc7928C1CFC6fbEd710c",
+      "transactionHash": "0x0dc350b8b888f95b444c0750da32e5643d6748837ec966fbc7e09fa6920e0078"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-04-28T16:56:34.413Z",
+  "updatedAt": "2025-04-28T17:04:19.851Z",
+  "networkType": "ethereum",
   "devdoc": {
     "details": "Contract for logging energy production and consumption with advanced metrics",
     "kind": "dev",

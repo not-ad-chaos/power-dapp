@@ -118,9 +118,9 @@ export default function RenewableCertificateCard() {
             {isConnected ? (
                 <>
                     <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                        <h3 className="text-lg font-semibold mb-2 text-gray-700">Your Certificates</h3>
+                        <h3 className="text-lg font-semibold mb-2 text-gray-800">Your Certificates</h3>
                         <div className="text-3xl font-bold text-blue-600">{certificateCount}</div>
-                        <div className="text-sm text-gray-500 mt-1">
+                        <div className="text-sm text-gray-700 mt-1">
                             Each certificate represents renewable energy production
                         </div>
                     </div>
@@ -128,11 +128,11 @@ export default function RenewableCertificateCard() {
                     {!showDetails ? (
                         <>
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2 text-gray-700">Your Certificate Portfolio</h3>
+                                <h3 className="text-lg font-semibold mb-2 text-gray-800">Your Certificate Portfolio</h3>
                                 {isLoading ? (
-                                    <p className="text-center py-4">Loading certificates...</p>
+                                    <p className="text-center py-4 text-gray-700">Loading certificates...</p>
                                 ) : ownedCertificates.length === 0 ? (
-                                    <p className="text-center py-4 text-gray-500">You don't own any certificates yet</p>
+                                    <p className="text-center py-4 text-gray-700">You don't own any certificates yet</p>
                                 ) : (
                                     <div className="space-y-2 max-h-60 overflow-y-auto">
                                         {ownedCertificates.map((cert, index) => (
@@ -141,12 +141,14 @@ export default function RenewableCertificateCard() {
                                                 className="p-3 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer flex justify-between items-center"
                                                 onClick={() => handleCertificateSelect(cert)}>
                                                 <div>
-                                                    <span className="font-medium">{cert.energyAmount} kWh</span>
-                                                    <span className="text-sm text-gray-500 ml-2">
+                                                    <span className="font-medium text-gray-900">
+                                                        {cert.energyAmount} kWh
+                                                    </span>
+                                                    <span className="text-sm text-gray-700 ml-2">
                                                         ({cert.energySource})
                                                     </span>
                                                 </div>
-                                                <span className="text-sm text-gray-400">{cert.issuanceDate}</span>
+                                                <span className="text-sm text-gray-700">{cert.issuanceDate}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -154,9 +156,9 @@ export default function RenewableCertificateCard() {
                             </div>
 
                             <form onSubmit={handleMintCertificate} className="mb-4">
-                                <h3 className="text-lg font-semibold mb-2 text-gray-700">Mint New Certificate</h3>
+                                <h3 className="text-lg font-semibold mb-2 text-gray-800">Mint New Certificate</h3>
                                 <div className="mb-4">
-                                    <label htmlFor="generator-address" className="block text-gray-700 mb-2">
+                                    <label htmlFor="generator-address" className="block text-gray-800 mb-2">
                                         Generator Address
                                     </label>
                                     <input
@@ -164,14 +166,14 @@ export default function RenewableCertificateCard() {
                                         type="text"
                                         value={generatorAddress}
                                         onChange={(e) => setGeneratorAddress(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                                         placeholder="0x..."
                                         required
                                     />
                                 </div>
 
                                 <div className="mb-4">
-                                    <label htmlFor="energy-produced" className="block text-gray-700 mb-2">
+                                    <label htmlFor="energy-produced" className="block text-gray-800 mb-2">
                                         Energy Produced (kWh)
                                     </label>
                                     <input
@@ -179,23 +181,23 @@ export default function RenewableCertificateCard() {
                                         type="number"
                                         value={energyAmount}
                                         onChange={(e) => setEnergyAmount(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                                         placeholder="Enter amount in kWh"
                                         required
                                         min="100"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Minimum 100 kWh required</p>
+                                    <p className="text-xs text-gray-700 mt-1">Minimum 100 kWh required</p>
                                 </div>
 
                                 <div className="mb-4">
-                                    <label htmlFor="energy-source" className="block text-gray-700 mb-2">
+                                    <label htmlFor="energy-source" className="block text-gray-800 mb-2">
                                         Energy Source
                                     </label>
                                     <select
                                         id="energy-source"
                                         value={energySource}
                                         onChange={(e) => setEnergySource(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                                         required>
                                         <option value="solar">Solar</option>
                                         <option value="wind">Wind</option>
@@ -206,7 +208,7 @@ export default function RenewableCertificateCard() {
                                 </div>
 
                                 <div className="mb-4">
-                                    <label htmlFor="location" className="block text-gray-700 mb-2">
+                                    <label htmlFor="location" className="block text-gray-800 mb-2">
                                         Location
                                     </label>
                                     <input
@@ -214,7 +216,7 @@ export default function RenewableCertificateCard() {
                                         type="text"
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                                         placeholder="Enter location (e.g., California)"
                                         required
                                     />
@@ -231,7 +233,7 @@ export default function RenewableCertificateCard() {
                     ) : (
                         <div className="mb-6">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg font-semibold text-gray-700">Certificate Details</h3>
+                                <h3 className="text-lg font-semibold text-gray-800">Certificate Details</h3>
                                 <button
                                     onClick={() => {
                                         setShowDetails(false)
@@ -247,23 +249,31 @@ export default function RenewableCertificateCard() {
                                 <div className="space-y-4">
                                     <div className="p-4 bg-blue-50 rounded-lg">
                                         <div className="grid grid-cols-2 gap-2">
-                                            <div className="text-gray-600">Certificate ID:</div>
-                                            <div className="font-medium">{selectedCertificate.id}</div>
+                                            <div className="text-gray-700">Certificate ID:</div>
+                                            <div className="font-medium text-gray-900">{selectedCertificate.id}</div>
 
-                                            <div className="text-gray-600">Energy Amount:</div>
-                                            <div className="font-medium">{selectedCertificate.energyAmount} kWh</div>
+                                            <div className="text-gray-700">Energy Amount:</div>
+                                            <div className="font-medium text-gray-900">
+                                                {selectedCertificate.energyAmount} kWh
+                                            </div>
 
-                                            <div className="text-gray-600">Energy Source:</div>
-                                            <div className="font-medium">{selectedCertificate.energySource}</div>
+                                            <div className="text-gray-700">Energy Source:</div>
+                                            <div className="font-medium text-gray-900">
+                                                {selectedCertificate.energySource}
+                                            </div>
 
-                                            <div className="text-gray-600">Location:</div>
-                                            <div className="font-medium">{selectedCertificate.location}</div>
+                                            <div className="text-gray-700">Location:</div>
+                                            <div className="font-medium text-gray-900">
+                                                {selectedCertificate.location}
+                                            </div>
 
-                                            <div className="text-gray-600">Issuance Date:</div>
-                                            <div className="font-medium">{selectedCertificate.issuanceDate}</div>
+                                            <div className="text-gray-700">Issuance Date:</div>
+                                            <div className="font-medium text-gray-900">
+                                                {selectedCertificate.issuanceDate}
+                                            </div>
 
-                                            <div className="text-gray-600">Status:</div>
-                                            <div className="font-medium">
+                                            <div className="text-gray-700">Status:</div>
+                                            <div className="font-medium text-gray-900">
                                                 {selectedCertificate.isValid ? "Valid" : "Redeemed"}
                                             </div>
                                         </div>
@@ -275,7 +285,7 @@ export default function RenewableCertificateCard() {
                                                 <div>
                                                     <label
                                                         htmlFor="transfer-address"
-                                                        className="block text-gray-700 mb-2">
+                                                        className="block text-gray-800 mb-2">
                                                         Transfer to Address
                                                     </label>
                                                     <input
@@ -283,7 +293,7 @@ export default function RenewableCertificateCard() {
                                                         type="text"
                                                         value={transferAddress}
                                                         onChange={(e) => setTransferAddress(e.target.value)}
-                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                                                         placeholder="0x..."
                                                         required
                                                     />
@@ -298,8 +308,8 @@ export default function RenewableCertificateCard() {
                                             </form>
 
                                             <div className="border-t pt-4">
-                                                <h4 className="font-medium mb-2">Redeem Certificate</h4>
-                                                <p className="text-sm text-gray-500 mb-2">
+                                                <h4 className="font-medium mb-2 text-gray-800">Redeem Certificate</h4>
+                                                <p className="text-sm text-gray-700 mb-2">
                                                     Redeeming makes the certificate invalid. This action cannot be
                                                     undone.
                                                 </p>
@@ -319,7 +329,7 @@ export default function RenewableCertificateCard() {
                 </>
             ) : (
                 <div className="text-center py-8">
-                    <p className="text-gray-500 mb-4">Connect your wallet to view and mint certificates</p>
+                    <p className="text-gray-700 mb-4">Connect your wallet to view and mint certificates</p>
                 </div>
             )}
         </div>

@@ -2,10 +2,10 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react"
 import { ethers } from "ethers"
-import contractsData from "../contracts/contracts.json"
-import EnergyLogger from "../contracts/EnergyLogger.json"
-import RenewableCertificate from "../contracts/RenewableCertificate.json"
-import EnergyTradeLedger from "../contracts/EnergyTradeLedger.json"
+import contractsData from "../constants/contracts.json"
+import EnergyLogger from "../artifacts/EnergyLogger.json"
+import RenewableCertificate from "../artifacts/RenewableCertificate.json"
+import EnergyTradeLedger from "../artifacts/EnergyTradeLedger.json"
 
 interface ContractContextType {
     account: string

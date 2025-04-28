@@ -227,7 +227,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -240,7 +241,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -299,7 +301,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -312,7 +315,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -325,7 +329,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -349,7 +354,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -373,7 +379,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -397,7 +404,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -471,11 +479,13 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "stateMutability": "payable",
-      "type": "receive"
+      "type": "receive",
+      "payable": true
     },
     {
       "inputs": [
@@ -583,7 +593,8 @@
       "name": "acceptOffer",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -722,7 +733,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -781,7 +793,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -800,7 +813,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -819,7 +833,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -838,7 +853,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -857,7 +873,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -885,7 +902,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -914,7 +932,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -46566,10 +46585,23 @@
       "links": {},
       "address": "0x22d2D371b6a9dCb5298E59Ce2E60d17680566bd7",
       "transactionHash": "0x58e978b722030b424524c1c5fefb72ae5efcfed8a16a52b1209e16231e2b8678"
+    },
+    "1745859279690": {
+      "events": {},
+      "links": {},
+      "address": "0xDab2041bCD1434459506Bba651938aaf7322c5F0",
+      "transactionHash": "0x109cbd9c3dbccd332e0fb03f206edc4798a2ad89cf8f6ad9128fda1dde68af5c"
+    },
+    "1745859858735": {
+      "events": {},
+      "links": {},
+      "address": "0xDab2041bCD1434459506Bba651938aaf7322c5F0",
+      "transactionHash": "0x109cbd9c3dbccd332e0fb03f206edc4798a2ad89cf8f6ad9128fda1dde68af5c"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-04-28T16:56:34.418Z",
+  "updatedAt": "2025-04-28T17:04:19.875Z",
+  "networkType": "ethereum",
   "devdoc": {
     "details": "Advanced smart contract for peer-to-peer energy trading with built-in market mechanisms, pricing, and renewable energy certificate integration",
     "kind": "dev",
