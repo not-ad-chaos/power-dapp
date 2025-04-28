@@ -46595,12 +46595,12 @@
     "1745859858735": {
       "events": {},
       "links": {},
-      "address": "0xDab2041bCD1434459506Bba651938aaf7322c5F0",
-      "transactionHash": "0x109cbd9c3dbccd332e0fb03f206edc4798a2ad89cf8f6ad9128fda1dde68af5c"
+      "address": "0x73cDC2A21EAaD72a5d608D7C02B268aAd9a40A89",
+      "transactionHash": "0xa025713dda3cdda2154693f6372792425fd5b1fe9c0012211a7899640e322d02"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-04-28T17:04:19.875Z",
+  "updatedAt": "2025-04-28T17:04:24.151Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Advanced smart contract for peer-to-peer energy trading with built-in market mechanisms, pricing, and renewable energy certificate integration",
