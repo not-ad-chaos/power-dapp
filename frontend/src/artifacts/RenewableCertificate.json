@@ -20467,12 +20467,18 @@
     "1745859858735": {
       "events": {},
       "links": {},
-      "address": "0x743A4066cca05e8536D82628bBb03cA328c17E43",
-      "transactionHash": "0x03d84c9e8cce4dc00bb5c0c8afc53dc6297023a123d8d8e8f9a1cba889a75370"
+      "address": "0x5e8e8B9bbb051964a5514156C5B3091CB5B3bC15",
+      "transactionHash": "0x1a562c308d1718afaf9f77dd1a01d6258c624f976b182dd57398776185ddd22b"
+    },
+    "1745903366697": {
+      "events": {},
+      "links": {},
+      "address": "0xa417bb88629Bb0Ab57Bbb245b4414071902953AF",
+      "transactionHash": "0xac0b5abb55ffe22cc06023c8e8ef94e95d443051b9f9b1950966d06df20b9d09"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-04-28T17:04:24.122Z",
+  "updatedAt": "2025-04-29T05:09:31.165Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Contract for managing Renewable Energy Certificates (RECs) This contract allows for minting, transferring, and trading renewable energy certificates",

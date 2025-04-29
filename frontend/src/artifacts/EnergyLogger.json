@@ -27729,12 +27729,18 @@
     "1745859858735": {
       "events": {},
       "links": {},
-      "address": "0x8341ad3AB257A9f7115717b1Ce8D6c8eD80795e0",
-      "transactionHash": "0xd3c22f939b1f1a9158074c34081bfef135fcc749af2a3b97a50914da93d1e34c"
+      "address": "0xCB260830f2487561791806A304D247679e7221D0",
+      "transactionHash": "0xd453634730b5bd9b2b9d0db418b470363a4ac56669424869f02d64dd7bed76b3"
+    },
+    "1745903366697": {
+      "events": {},
+      "links": {},
+      "address": "0x51fFECC16e2755a3568cCc7928C1CFC6fbEd710c",
+      "transactionHash": "0x0dc350b8b888f95b444c0750da32e5643d6748837ec966fbc7e09fa6920e0078"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2025-04-28T17:04:24.138Z",
+  "updatedAt": "2025-04-29T05:09:31.174Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Contract for logging energy production and consumption with advanced metrics",
